@@ -12,6 +12,7 @@ MQTT_BROKER = env.get("MQTT_BROKER")
 MQTT_CLIENT_ID = env.get(
     "MQTT_CLIENT_ID", f"teltonika2influxdb-{random.randint(0, 1000)}"
 )
+MQTT_TOPIC = env.get("MQTT_TOPIC", "device/+/+")
 
 try:
     TELTONIKA_IP = env["TELTONIKA_IP"]
@@ -38,7 +39,7 @@ FIELDS = ["temperature", "signal", "network", "connection", "uptime", "wan"]
 
 async def read(client: aiomqtt.Client, idb_write: WriteApi):
     async with client.messages() as messages:
-        await client.subscribe("teltonika/device/+/+")
+        await client.subscribe(MQTT_TOPIC)
         async for message in messages:
             write_to_influxdb(idb_write, message)
 
