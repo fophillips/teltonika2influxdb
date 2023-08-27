@@ -47,7 +47,7 @@ async def send_get(client: aiomqtt.Client):
     while True:
         for field in FIELDS:
             await client.publish("device/get", field)
-        await asyncio.sleep(3)
+        await asyncio.sleep(30)
 
 
 def write_to_influxdb(idb_write: WriteApi, message: aiomqtt.Message):
